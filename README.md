@@ -27,6 +27,7 @@ This is a Spring Boot application for fantasy premier league data. The project s
   - expected goals 
   - expected assists
   - team name
+- Simple Frontend to test the main feautures
 
 ## Data source
 
