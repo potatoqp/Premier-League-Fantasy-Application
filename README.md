@@ -24,18 +24,12 @@ This is a Spring Boot application for fantasy premier league data. The project s
   - assists
   - penalties scored
   - cards
-  - expected goals / expected assists
+  - expected goals 
+  - expected assists
   - team name
 
 ## Data source
 
 The application is designed to work with player statistics imported from the CSV file included in the repository. These records are mapped into a postgresql database and served through the API.
 
-## Tech stack
-
-- Java
-- Spring Boot
-- Spring Data JPA
-- PostgreSQL
-- Maven
 
