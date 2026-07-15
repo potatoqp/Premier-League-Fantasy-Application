@@ -24,24 +24,8 @@ public class PlayerController {
             @RequestParam(required = false) String team,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String position,
-            @RequestParam(required = false) String nation){
-        if (team != null && position != null){
-            return playerService.getPlayersByTeamAndPosition(team, position);
-        }
-        else if (team != null) {
-            return playerService.getPlayersFromTeam(team);
-        }
-        else if (name != null) {
-            return playerService.getPlayersByName(name);
-        }
-        else if (position != null) {
-            return playerService.getPlayersByPos(position);
-        }
-        else if (nation != null) {
-            return playerService.getPlayerByNation(nation);
-        } else {
-            return playerService.getPlayers();
-        }
+            @RequestParam(required = false) String nation) {
+        return playerService.getFilteredPlayers(team, name, position, nation);
     }
 
     @PostMapping

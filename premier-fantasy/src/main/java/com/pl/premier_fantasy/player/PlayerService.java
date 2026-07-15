@@ -5,7 +5,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,42 +23,50 @@ public class PlayerService {
     }
 
     public List<Player> getPlayers(){
-        return playerRepository.findAll();
+        return getFilteredPlayers(null, null, null, null);
+    }
+
+    public List<Player> getFilteredPlayers(String team, String name, String position, String nation) {
+        return playerRepository.findAll().stream()
+                .filter(this::isValidPlayer)
+                .filter(player -> matchesFilter(player.getTeam_name(), team))
+                .filter(player -> matchesFilter(player.getName(), name))
+                .filter(player -> matchesFilter(player.getPosition(), position))
+                .filter(player -> matchesFilter(player.getNation(), nation))
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(
+                                this::buildPlayerKey,
+                                player -> player,
+                                (first, second) -> first,
+                                LinkedHashMap::new
+                        ),
+                        map -> List.copyOf(map.values())
+                ));
     }
 
     //find players from a specific team
     public List<Player> getPlayersFromTeam(String teamName) {
-        return playerRepository.findAll().stream()
-                .filter(player -> teamName.equals(player.getTeam_name()))
-                .collect(Collectors.toList());
+        return getFilteredPlayers(teamName, null, null, null);
     }
 
     // search player name for searchbar
     public List<Player> getPlayersByName(String searchText) {
-        return playerRepository.findAll().stream()
-                .filter(player -> player.getName().toLowerCase().contains(searchText.toLowerCase()))
-                .collect(Collectors.toList());
+        return getFilteredPlayers(null, searchText, null, null);
     }
 
     // search a player by his position
     public List<Player> getPlayersByPos(String searchText) {
-        return playerRepository.findAll().stream()
-                .filter(player -> player.getPosition().toLowerCase().contains(searchText.toLowerCase()))
-                .collect(Collectors.toList());
+        return getFilteredPlayers(null, null, searchText, null);
     }
 
     // search a player by his nationality
     public List<Player> getPlayerByNation(String searchText) {
-        return playerRepository.findAll().stream()
-                .filter(player -> player.getNation().toLowerCase().contains(searchText.toLowerCase()))
-                .collect(Collectors.toList());
+        return getFilteredPlayers(null, null, null, searchText);
     }
 
     // find a player by both team and position
     public List<Player> getPlayersByTeamAndPosition(String team, String position){
-        return playerRepository.findAll().stream()
-                .filter(player -> team.equals(player.getTeam_name()) && position.equals(player.getPosition()))
-                .collect(Collectors.toList());
+        return getFilteredPlayers(team, null, position, null);
     }
 
     public Player addPlayer(Player player){
@@ -82,5 +93,37 @@ public class PlayerService {
     @Transactional
     public void deletePlayer(String playerName) {
         playerRepository.deleteByName(playerName);
+    }
+
+    private boolean isValidPlayer(Player player) {
+        if (player == null) {
+            return false;
+        }
+
+        String name = Optional.ofNullable(player.getName()).orElse("").trim();
+        if (name.isEmpty()) {
+            return false;
+        }
+
+        String normalizedName = name.toLowerCase(Locale.ROOT);
+        return !normalizedName.contains("squad total") && !normalizedName.contains("total");
+    }
+
+    private boolean matchesFilter(String fieldValue, String filterValue) {
+        if (filterValue == null || filterValue.isBlank()) {
+            return true;
+        }
+
+        String normalizedFieldValue = Optional.ofNullable(fieldValue).orElse("").trim().toLowerCase(Locale.ROOT);
+        String normalizedFilterValue = filterValue.trim().toLowerCase(Locale.ROOT);
+        return normalizedFieldValue.contains(normalizedFilterValue);
+    }
+
+    private String buildPlayerKey(Player player) {
+        return String.join("|",
+                Optional.ofNullable(player.getName()).orElse(""),
+                Optional.ofNullable(player.getTeam_name()).orElse(""),
+                Optional.ofNullable(player.getPosition()).orElse(""),
+                Optional.ofNullable(player.getNation()).orElse(""));
     }
 }

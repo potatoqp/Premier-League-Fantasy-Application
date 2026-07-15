@@ -1,0 +1,143 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #f8fafc;
+  background: linear-gradient(135deg, #071b2f 0%, #102c4c 100%);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #7dd3fc;
+  font-size: 0.8rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+}
+
+.hero-copy {
+  margin-top: 0.5rem;
+  max-width: 700px;
+  color: #cbd5e1;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #bfdbfe;
+}
+
+input {
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(2, 6, 23, 0.4);
+  color: white;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  background: #38bdf8;
+  color: #082f49;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.results {
+  margin-top: 1rem;
+}
+
+.status {
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.error {
+  color: #fda4af;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.player-card {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.2);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.card-header span {
+  font-size: 0.82rem;
+  color: #bae6fd;
+}
+
+.player-card p {
+  margin: 0.25rem 0;
+  color: #e2e8f0;
+}
